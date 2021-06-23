@@ -1,78 +1,51 @@
-# **GALAXY MERGER** 
+# **RANDOM MOTION / CONWAY'S GAME OF LIFE** 
 
 <p align="center">
-  <img src="https://github.com/EnguerranVidal/Galaxy-Collision/blob/main/docs/showcase_gifs/Galaxy_Collision.gif" width="600" height="600">
+  <img src="https://github.com/EnguerranVidal/Random-Motion/blob/main/docs/showcase_gifs/gameoflife.gif" width="600" height="600">
 </p>
 
 
-This Python program's goal is to simulate the collision of multiple 
-galaxies in a 2D plane and create a GIF animation of their interaction.
-For this simulation, we will use a modified N-Body Engine we used for the 
-**[Planetary-Orbits-Solar-System](https://github.com/EnguerranVidal/Planetary-Orbits-Solar-System)** Python project back in 2020.
+This Python project's goal is to simulate different kinds of random motion and emerging patterns from simple rules.
+It contains a Conway's Game of Life and a Random Walk algorithm all able to create animations in GIF formats through the use of the Imageio and Matplotlib library.
 
 
-## The Galaxies :
+## Random Walk :
 
-The program's galaxies are made of a center massive black hole (white dot). It also contains big amount of massless particles
-representing stars that orbit around the center (blue dots). The particles are placed along circles/rings which share the same speed from
-Newtonian physics. We then give the galaxies an initial position and speed. An animation of the different speed rings can be found right above before the collision from the second galaxy..
+Imagine a drunk person making steps in 4 random directions : "forward", "backward", "left" and "right" and you keep track of all the position they has been in, making for a marvelous pattern emerging from randomness. That is basically the concept for this part of the project which revolves around a single Python function capable of chossing random steps, keeping track of the tracer's trajectory ( the drunk person ) and create a GIF animation out of it, resulting in something such as what you can see below :
 
-## The Particles :
-
-As we mentioned earlier, the particles are separated into two groups.
-
-- **Central Black Holes :** 
-
-They are attractors and are also slowed down by galaxies' surrounding halos through dynamic friction, more can be found on Thijs Verkade's thesis **["Simulating Galaxy Collisions in Python for Astronomy Education "](https://fse.studenttheses.ub.rug.nl/22594/1/bAST_2020_VerkadeT.pdf)**. However, we will try to explain some of its principles down below. Galaxies are usually surrounded by a "halo" of dark matter and old stars which are distributed in a spherical cloud. When a massive body penetrates it, some dark matter and stars are put behind the massive body and slow it down.
 <p align="center">
-  <img src="https://github.com/EnguerranVidal/Galaxy-Collision/blob/main/docs/showcase_images/halos.PNG">
+  <img src="https://github.com/EnguerranVidal/Random-Motion/blob/main/docs/showcase_gifs/randomwalk.gif" width="600" height="600">
 </p>
 
 
-The resulting acceleration is similar to air friction. It is usually called "dynamical friction" and is stronger the highest the massive body speed is. The used equation for this acceleration can be found right below, it direclty affects the massive body's velocity and ease the "merging" process for galaxies since without this force, colliding galaxies would just flung out to infinity from energy conservation. The density of the halo cloud is calculated using the method from the source thesis.
+## Conway's Game of Life :
+
+This part of the project focuses more on a famous cellular automaton rules which create interesting emerging patterns. The Conway's Game of life is made of a grid which pixels are defined by their state as "dead" or "alive" and follow 4 famous rules :
+
+- Any live cell with fewer than two live neighbours dies, as if by underpopulation.
+- Any live cell with two or three live neighbours lives on to the next generation.
+- Any live cell with more than three live neighbours dies, as if by overpopulation.
+- Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
+
+We implemented these conditions/rules in the **[GameOfLife.nextstep](https://github.com/EnguerranVidal/Random-Motion/blob/main/conway/game_of_life.py)** method.
+The code contains a major object called **[GameOfLife](https://github.com/EnguerranVidal/Random-Motion/blob/main/conway/game_of_life.py)** that instigates and runs the simulations but also can withstand the implementation of different boundary conditions and pattern changes. It can also save and load domains if need be, reinitialize himself if you want to see a specific result again, add famous Game of Life pattern/blocks for further study and creativity such as this "glider gun" used in the creation of computers inside the game of life !
+
 <p align="center">
-  <img src="https://github.com/EnguerranVidal/Galaxy-Collision/blob/main/docs/showcase_images/friction.PNG">
+  <img src="https://github.com/EnguerranVidal/Random-Motion/blob/main/docs/showcase_gifs/glider_gun.gif" width="300" height="300">
 </p>
 
 
-- **Massless Particles :** 
+# FUTURE ADDITIONS ?
 
-They represent stars which masses are insignificant when compared to the center black holes we discussed earlier. To ease the calculations the N-Body problem poses, we make them massless, which means they are not taken into account in the overall gravity calculations and do not affect the central black holes.
+- The adding of patterns to the blank slate is still buggy and could easily crash if the down-right corner of the pattern "box" touches or overextand the domain borders.
 
-## The N-Body Engine :
+- The created GIFs are as of now uncompressed and can therefore become quite heavy, we will try to implement a compressing function later on to ease this problem.
 
-The calculations engine has been directly taken from the  **[Planetary-Orbits-Solar-System](https://github.com/EnguerranVidal/Planetary-Orbits-Solar-System)** Python Numerical Physics project I did with Jonathan OERS back in 2020. It was of course modified to fit the needs of this project, especially to separate the calculations of next-steps' positions and velocities for central massive bodies (black holes) and massless particles.
-The use of integration schemes to solve the N-Body problem differential equations is implemented through the Euler method and the Runge-Kutta 4 method which are the two most famous. We will try to implement more integratiosn schemes later and also try and compare those to the use of "odeint" from the **scipy** scientific library.
+- We will add a bit more patterns, better their use through sorting folders and a catalogue fonction capable of printing all the patterns available or even better : plot them.
 
-<p align="center">
-  <img src="https://github.com/EnguerranVidal/Galaxy-Collision/blob/main/docs/showcase_images/integration.PNG">
-</p>
+- We will allow the user to show the steps passing through a display in the animation.
 
-## The Main Simulation Class :
+- We will add a receiding trail for the random walk animation instead of the current bright white one.
 
-The main class commands and runs calculation done by the above engine. It then stores the resulting data in a txt file put in the **[\logs directory](https://github.com/EnguerranVidal/Galaxy-Collision/tree/main/logs)** with a header meant to portray the simulation parameters for easy replicability and further calculations through a system of "loadable sessions". Such header can be seen right below, it hosts some info about the diferent galaxies.
-<p align="center">
-  <img src="https://github.com/EnguerranVidal/Galaxy-Collision/blob/main/docs/showcase_images/header.PNG">
-</p>
-The data can then displayed in a Matplotlib animation. The animation can be stored too as a GIF file through the use of the imageio library. However, as of now, the GIF is not compressed and can therefore be quite heavy, we will try to fix this annoyance in the next update if possible.
-
-# CONTENTS
-This repository contains the following files :
-- **[main.py](https://github.com/EnguerranVidal/Galaxy-Collision/blob/main/main.py)** : contains an runnable code resulting in the creation of the uncompressed top page animation of two galaxies colliding.
-- **[__galaxycollision.py](https://github.com/EnguerranVidal/Galaxy-Collision/blob/main/__galaxycollision.py)** : The main file containing the classes and functions used throughout the project. 
- 
-
-# POSSIBLE UPDATES ?
-
-- The galaxies cannot, as of now, really "merg", this is due to the absence of a particle collision merg feature that could able us to fuse the multiple massive bodies when they get too close to one another. Since the main simulation class depends on the number of galaxies remaining constant, this feature could take a certain amount of time to implement. For now, the massive bodies simply get close and the least heavy is flung out of the system.
-
-- The created GIF from the Galaxy_Collision.display() method is for now uncompressed and can therefore become quite heavy, we will try to implement a compressing function later on to ease this problem.
-
-- We will try to add trails to the animation display if possible. These will allow us the overall course of the colliding galaxy.
-
-- We will allow the user to show the time passing through a display in the collision animation as well as enter the wanted figure size.
-
-- We will fix the issue of units for masses and distances since as of now, their units are unspecified.
-
-- The simulation runs in a 2D plane which does ot reflect a true sense of the beauty of galaxy collisions. We will try to implement a 3D version later on.
+- We will try and add more boundary conditions for the game of life algorithm, at least implement toroidal boundary conditions.
 
