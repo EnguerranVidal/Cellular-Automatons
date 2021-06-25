@@ -16,7 +16,16 @@ class GameOfLife:
         self.domain_type = None
         # Loading Patterns
         self.current_dir = os.path.dirname(os.path.abspath(__file__))
+        pattern_root = self.current_dir + "\\patterns"
+        if not os.path.exists(pattern_root):  # creating the "patterns" directory if not present
+            os.mkdir(pattern_root)
+        self.patterns_categories = [f for f in os.listdir(pattern_root) if os.path.isdir(os.path.join(pattern_root, f))]
         self.patterns = []
+        for i in self.patterns_categories:
+            category_path = os.path.join(pattern_root, i)
+            category = [f for f in os.listdir(category_path) if os.path.isfile(os.path.join(category_path, f))]
+            self.patterns.append(category)
+        self.patterns.append([f for f in os.listdir(pattern_root) if not os.path.isdir(os.path.join(pattern_root, f))])
 
     def random_domain(self, K=5000, extent=(100, 100)):
         arr = np.zeros(extent)
@@ -42,13 +51,36 @@ class GameOfLife:
         self.domain = np.zeros(extent)
         self.initial_domain = self.domain
 
+    def catalogue(self):
+        n = len(self.patterns)
+        for i in range(n-1):
+            print(self.patterns_categories[i].upper()+" :")
+            m = len(self.patterns[i])
+            for j in range(m):
+                print(self.patterns[i][j])
+            print()
+        if len(self.patterns[-1])>0:
+            print("OTHER :")
+            m = len(self.patterns[-1])
+            for j in range(m):
+                print(self.patterns[-1][j])
+
     def add_pattern(self, name="square", upper_corner=(0, 0)):
+        # Get the pattern potential path
+        n = len(self.patterns_categories)
         path = self.current_dir + "\\patterns\\" + name + ".txt"
+        for i in range(n):
+            if name + ".txt" in self.patterns[i]:
+                path = self.current_dir + "\\patterns\\" + self.patterns_categories[i] + "\\" + name + ".txt"
         assert os.path.exists(path) == True, "ERROR : '" + name + ".txt' file does not exists, try a different name."
+        # Loading the pattern
         pattern = np.loadtxt(path)
         extent = pattern.shape
         domain_extent = self.domain.shape
-        self.domain[upper_corner[0]:upper_corner[0] + extent[0],upper_corner[1]:upper_corner[1] + extent[1]]=pattern
+        if self.BC == "walls":
+            assert upper_corner[0] + extent[0]<domain_extent[0],"ERROR : pattern overlapping with domain borders."
+            assert upper_corner[1] + extent[1] < domain_extent[1], "ERROR : pattern overlapping with domain borders."
+        self.domain[upper_corner[0]:upper_corner[0] + extent[0], upper_corner[1]:upper_corner[1] + extent[1]] = pattern
         self.initial_domain = self.domain
 
     def boundaries(self, bc="walls"):
@@ -94,9 +126,10 @@ class GameOfLife:
             universe.set_data(np.flipud(self.domain))
             plt.draw()
 
-    def run_gif(self, steps=1000, gif_fps=10, gif_duration=30):
+    def run_gif(self, steps=1000, gif_fps=15, gif_duration=10):
         assert self.domain is not None, "Error : Define domain before trying a new step."
         assert self.BC is not None, "Error : Define boundary conditions before trying a new step."
+        assert gif_fps * gif_duration < steps,"Error : not enough steps to create a GIF with these characteristics"
         save_file = gif_name()
         fig = plt.figure(figsize=(8, 8))
         ax = fig.add_subplot(111)
