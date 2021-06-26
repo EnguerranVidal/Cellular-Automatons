@@ -30,18 +30,22 @@ This part of the project focuses more on a famous cellular automaton rules which
 We implemented these conditions/rules in the **[GameOfLife.nextstep](https://github.com/EnguerranVidal/Random-Motion/blob/main/conway/game_of_life.py)** method.
 The code contains a major object called **[GameOfLife](https://github.com/EnguerranVidal/Random-Motion/blob/main/conway/game_of_life.py)** that instigates and runs the simulations but also can withstand the implementation of different boundary conditions and pattern changes. It can also save and load domains if need be, reinitialize himself if you want to see a specific result again, add famous Game of Life pattern/blocks for further study and creativity such as this "glider gun" used in the creation of computers inside the game of life !
 
+- Glider Gun Pattern
+
 <p align="center">
   <img src="https://github.com/EnguerranVidal/Random-Motion/blob/main/docs/showcase_gifs/glider_gun.gif" width="300" height="300">
+</p>
+
+- Max Pattern
+
+<p align="center">
+  <img src="https://github.com/EnguerranVidal/Random-Motion/blob/main/docs/showcase_gifs/max.gif" width="300" height="300">
 </p>
 
 
 # FUTURE ADDITIONS ?
 
-- The adding of patterns to the blank slate is still buggy and could easily crash if the down-right corner of the pattern "box" touches or overextand the domain borders.
-
 - The created GIFs are as of now uncompressed and can therefore become quite heavy, we will try to implement a compressing function later on to ease this problem.
-
-- We will add a bit more patterns, better their use through sorting folders and a catalogue fonction capable of printing all the patterns available or even better : plot them.
 
 - We will allow the user to show the steps passing through a display in the animation.
 
