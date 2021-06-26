@@ -17,8 +17,14 @@ class GameOfLife:
         # Loading Patterns
         self.current_dir = os.path.dirname(os.path.abspath(__file__))
         pattern_root = self.current_dir + "\\patterns"
+        gifs_root = self.current_dir + "\\gifs"
+        domains_root = self.current_dir + "\\domains"
         if not os.path.exists(pattern_root):  # creating the "patterns" directory if not present
             os.mkdir(pattern_root)
+        if not os.path.exists(domains_root):  # creating the "domains" directory if not present
+            os.mkdir(domains_root)
+        if not os.path.exists(gifs_root):  # creating the "gifs" directory if not present
+            os.mkdir(gifs_root)
         self.patterns_categories = [f for f in os.listdir(pattern_root) if os.path.isdir(os.path.join(pattern_root, f))]
         self.patterns = []
         for i in self.patterns_categories:
@@ -131,6 +137,7 @@ class GameOfLife:
         assert self.BC is not None, "Error : Define boundary conditions before trying a new step."
         assert gif_fps * gif_duration < steps,"Error : not enough steps to create a GIF with these characteristics"
         save_file = gif_name()
+        gif_path = self.current_dir + "\\gifs\\" + save_file
         fig = plt.figure(figsize=(8, 8))
         ax = fig.add_subplot(111)
         extent = self.domain.shape
@@ -156,4 +163,4 @@ class GameOfLife:
         # Creating GIF
         n_images = gif_fps * gif_duration
         Images = select_list(Images, n_images)
-        imageio.mimsave(save_file, Images, fps=gif_fps)
+        imageio.mimsave(gif_path, Images, fps=gif_fps)
