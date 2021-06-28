@@ -53,3 +53,5 @@ The code contains a major object called **[GameOfLife](https://github.com/Enguer
 
 - We will try and add more boundary conditions for the game of life algorithm, at least implement toroidal boundary conditions.
 
+- We will hopefully add a system where an image file could be converted as a txt file and added in the pattern catalogue.
+
