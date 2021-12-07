@@ -1,5 +1,7 @@
 # **RANDOM MOTION / CONWAY'S GAME OF LIFE** 
 
+  [![HitCount](http://hits.dwyl.com/EnguerranVidal/Conway-Game-of-Life.svg?style=flat)](http://hits.dwyl.com/EnguerranVidal/Conway-Game-of-Life)
+
 <p align="center">
   <img src="https://github.com/EnguerranVidal/Random-Motion/blob/main/docs/showcase_gifs/gameoflife.gif" width="600" height="600">
 </p>
