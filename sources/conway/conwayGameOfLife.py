@@ -1,7 +1,5 @@
 from typing import Optional
-
 import numpy as np
-import pygame as pg
 from matplotlib import pyplot as plt
 
 
