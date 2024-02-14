@@ -9,7 +9,7 @@ def gaussFunction(x, mu, sigma):
 
 
 class LeniaSimulation:
-    def __init__(self, domain: Optional[np.ndarray] = None, timeSteps: int = 10000, maxEndOscillations=5):
+    def __init__(self, domain: Optional[np.ndarray] = None, timeSteps: int = 10000):
         self.growthFunction = None
         self.filter = None
         self.filterFft = None
